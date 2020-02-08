@@ -1,7 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api')
 const fs = require('fs')
-const config = require('../config.json')
-const { token, ownerUserId, ownerUsername, maxSizeOfTaskQueue, userIdWhiteList, defaultBitrate } = config
+const { token, ownerUsername, maxSizeOfTaskQueue, defaultBitrate } = require('../config.json')
 const { DownloadTask } = require('./download-task')
 
 class Bot {
@@ -21,7 +20,6 @@ class Bot {
     this._startHandlingHelpRequests()
     this._startHandlingConvertRequests()
     this._startHandlingCancelRequests()
-    this._startHandlingAllowUserRequests()
     this._bot.startPolling()
       .catch(error => {
         console.log(error.message)
@@ -79,27 +77,12 @@ class Bot {
     })
   }
 
-  _startHandlingAllowUserRequests () {
-    this._bot.onText(/\/allow (\d+)/, async (msg, match) => {
-      if (msg.from.id !== ownerUserId) return
-      const chatId = msg.chat.id
-      const toAllowUserId = match[1]
-      userIdWhiteList.push(parseInt(toAllowUserId))
-      await fs.promises.writeFile('./config.json', JSON.stringify(config, null, 2))
-      await this._bot.sendMessage(chatId, `成功新增 ${toAllowUserId}`)
-    })
-  }
-
   _startHandlingConvertRequests () {
     this._bot.onText(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:\S+)?$/, async (msg, match) => {
       const chatId = msg.chat.id
-      const requestUserId = msg.from.id
       const requestMessageId = msg.message_id
       const vid = match[1]
-      if (requestUserId !== ownerUserId && !userIdWhiteList.includes(requestUserId)) {
-        await this._bot.sendMessage(chatId, `你不在此機器人的使用者白名單內喔！\n有需要的話請聯絡 @${ownerUsername}`)
-        return
-      } else if (this._pending[chatId]) {
+      if (this._pending[chatId]) {
         await this._bot.sendMessage(chatId, '一次只能進行一個 YouTube MP3 轉換的動作喔！')
         return
       } else if (Object.keys(this._pending).length >= maxSizeOfTaskQueue) {
