@@ -84,7 +84,7 @@ class Bot {
       if (msg.from.id !== ownerUserId) return
       const chatId = msg.chat.id
       const toAllowUserId = match[1]
-      userIdWhiteList.push(toAllowUserId)
+      userIdWhiteList.push(parseInt(toAllowUserId))
       await fs.promises.writeFile('./config.json', JSON.stringify(config, null, 2))
       await this._bot.sendMessage(chatId, `成功新增 ${toAllowUserId}`)
     })
