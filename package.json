@@ -1,0 +1,28 @@
+{
+  "name": "telegram-youtube-mp3-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "lint": "eslint src/**/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^3.0.0",
+    "node-telegram-bot-api": "^0.40.0",
+    "ytdl-core": "^1.0.7"
+  }
+}

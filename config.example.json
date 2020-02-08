@@ -1,0 +1,9 @@
+{
+  "ownerUserId": 99999999,
+  "ownerUsername": "WaaSay",
+  "token": "1094143313:AA",
+  "defaultBitrate": 320,
+  "defaultDownloadPath": "./audio/",
+  "maxSizeOfTaskQueue": 100,
+  "userIdWhiteList": []
+}
